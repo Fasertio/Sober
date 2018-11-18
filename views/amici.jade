@@ -1,0 +1,60 @@
+extends layout
+
+block content
+  nav.navbar.navbar-expand-lg.navbar-light.bg-light
+      a.navbar-brand(href='#') #{nome}
+      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      #navbarSupportedContent.collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          li.nav-item
+            a.nav-link(href='/users') Home 
+          li.nav-item.active
+            a.nav-link(href='#') 
+              | Amici
+              span.sr-only (current)
+          li.nav-item
+            a.nav-link(href='#') Impostazioni
+          li.nav-item
+            a.nav-link(href='/users/logout') Logout
+
+  if friend != null
+    for d in friend
+      .row.py-2
+        .col-12.col-sm-10.mx-auto
+          .card
+            .card-body
+              .row.align-items-center
+                .col-lg-2.col-4.mx-auto.text-nowrap.text-center.px-2
+                  a(href='')
+                    img.d-block.mx-auto.rounded-circle.img-fluid(src='#{d.pp}')
+                |                         
+                .col-lg-7.text-center.text-lg-left
+                  a.e(href='../users/@#{d.username}')
+                    h2.d-inline #{d.nome} #{d.cognome}
+                  |                             
+                  ul.list-inline.mt-3
+                    li.list-inline-item
+                      button#change.btn.btn-outline-secondary.rounded Rimuovi -
+                      a.id.font-italic &thinsp;&thinsp;  @#{d.username}
+                |   
+                .col-lg-3.col-6.mx-auto
+                  .row.no-gutters.text-center.justify-content-end.align-items-end
+                    .col
+                      h2 0
+                      |                                     
+                      span.badge.badge-pill.badge-dark.font-weight-normal posts
+                    |                                 
+                    .col
+                      h2 0
+                      |                                     
+                      span.badge.badge-pill.badge-dark.font-weight-normal amici
+                    |                                 
+                    .col
+                      h2 0
+                      |                                     
+                      span.badge.badge-pill.badge-dark.font-weight-normal badges
+  if length == 0
+    .card.mt-3
+      .card-body
+        p.card-text Sembra che tu non abbia aggiunto nessun amico 

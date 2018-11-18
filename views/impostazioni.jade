@@ -1,0 +1,86 @@
+extends layout
+
+block content
+    
+  nav.navbar.navbar-expand-lg.navbar-light.bg-light
+    a.navbar-brand(href='#')
+    button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+      span.navbar-toggler-icon
+    #navbarSupportedContent.collapse.navbar-collapse
+      ul.navbar-nav.mr-auto
+        li.nav-item
+          a.nav-link(href='/users')
+            | Home 
+            span.sr-only (current)
+        li.nav-item
+          a.nav-link(href='/users/amici') Amici
+        li.nav-item
+          a.nav-link(href='#') Impostazioni
+        li.nav-item
+          a.nav-link(href='/users/logout') Logout
+      // Button trigger modal
+      form.form-inline.my-2.my-lg-0
+        input#ricerca.form-control.mr-sm-2(placeholder='Cerca utente..', aria-label='Scrivi', aria-describedby='button-addon2', type='text')
+        button#button-addon2.btn.btn-outline-secondary(type='button', onclick='') Cerca 
+
+  .container
+      .row.mt-4
+        .col-3
+          #v-pills-tab.nav.flex-column.nav-pills(role='tablist', aria-orientation='vertical')
+            a#v-pills-avatar-tab.nav-link.active(data-toggle='pill', href='#v-pills-avatar', role='tab', aria-controls='v-pills-avatar', aria-selected='true') Avatar
+            |           
+            a#v-pills-descr-tab.nav-link(data-toggle='pill', href='#v-pills-descr', role='tab', aria-controls='v-pills-descr', aria-selected='false') Descrizione
+            |           
+            a#v-pills-mail-tab.nav-link(data-toggle='pill', href='#v-pills-mail', role='tab', aria-controls='v-pills-mail', aria-selected='false') Mail
+            |           
+            a#v-pills-password-tab.nav-link(data-toggle='pill', href='#v-pills-password', role='tab', aria-controls='v-pills-password', aria-selected='false') Password
+        |       
+        .col-9
+          #v-pills-tabContent.tab-content
+            // Avatar
+            #v-pills-avatar.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='v-pills-avatar-tab')
+              h5 Avatar
+              |             
+              p Aggiungi o modifica la foto profilo
+              |             
+              form(method='post', action='/users/uav', enctype="multipart/form-data")
+                .custom-file
+                  input#inputGroupFile04.custom-file-input(type='file', name="propic" ,aria-describedby='inputGroupFileAddon04')
+                  |                   
+                  label.custom-file-label(for='inputGroupFile04') Scegli file
+                |                 
+                button.btn.btn-primary.mt-2(type='submit') Invia
+            // Descrizione
+            #v-pills-descr.tab-pane.fade(role='tabpanel', aria-labelledby='v-pills-descr-tab')
+              h5 Descrizione
+              |             
+              p Aggiugni o modifica la descrizione del tuo profilo
+              |             
+              form(method='post', action='/users/udescr')
+                textarea#exampleFormControlTextarea1.form-control(rows='3', name="descr")
+                |               
+                button.btn.btn-primary.mt-2(type='submit') Invia
+            // Mail
+            #v-pills-mail.tab-pane.fade(role='tabpanel', aria-labelledby='v-pills-email-tab')
+              h5 Modifica mail
+              |             
+              a Inserisci l&apos;email precedente e la nuova per poterla cambiare
+              |             
+              form(method='post', action='/users/umail')
+                input#exampleInputEmail1.form-control.mt-2(type='email', aria-describedby='emailHelp', name='umail' ,placeholder='Inserisci la precedente mail' )
+                |               
+                input#exampleInputEmail2.form-control.mt-2(type='email', aria-describedby='emailHelp', name='confumail', placeholder='Inserisci la nuova mail')
+                |               
+                button.btn.btn-primary.mt-2(type='submit') Invia
+            // Password
+            #v-pills-password.tab-pane.fade(role='tabpanel', aria-labelledby='v-pills-password-tab')
+              h5 Modifica password
+              |             
+              a Inserisci la password precedente e la nuova per poterla cambiare
+              |             
+              form(method='post', action='/users/upsw')
+                input#exampleInputPsw1.form-control.mt-2(type='password', aria-describedby='pswhelp', name='upsw' ,placeholder='Inserisci la precedente password')
+                |               
+                input#exampleInputPsw2.form-control.mt-2(type='password', aria-describedby='pswhelp', name='uconfpsw' ,placeholder='Inserisci la nuova password')
+                |               
+                button.btn.btn-primary.mt-2(type='submit') Invia

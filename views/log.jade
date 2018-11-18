@@ -1,0 +1,229 @@
+extends layout
+
+block content
+  // Bootstrap core CSS
+  link(href='bootstrap/css/bootstrap.min.css', rel='stylesheet')
+  // Custom fonts for this template
+  link(href='font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+  |     
+  link(href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800', rel='stylesheet', type='text/css')
+  |     
+  link(href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic', rel='stylesheet', type='text/css')
+  // Plugin CSS
+  link(href='magnific-popup/magnific-popup.css', rel='stylesheet')
+  // Custom styles for this template
+  link(href='stylesheets/creative.css', rel='stylesheet')
+    
+  // Navigation
+  nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top
+    .container
+      a.navbar-brand.js-scroll-trigger(href='#page-top') Sober
+      |         
+      button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      |         
+      #navbarResponsive.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+          li.nav-item
+            a.nav-link.js-scroll-trigger(href='#about') About
+          |             
+          li.nav-item
+            a.nav-link.js-scroll-trigger(href='#services') Servizi
+          |             
+          li.nav-item
+            a.nav-link.js-scroll-trigger(href='#login') Login
+          |             
+          li.nav-item
+            a.nav-link.js-scroll-trigger(href='#contact') Contatti
+  |     
+  header.masthead.text-center.text-white.d-flex
+    .container.my-auto
+      .row
+        .col-lg-10.mx-auto
+          h1.text-uppercase
+            strong Il social network che hai sempre desiderato
+          |             
+          hr
+        |           
+        .col-lg-8.mx-auto
+          p.text-faded.mb-5
+            | Start Bootstrap can help you build better websites using the Bootstrap CSS framework! Just download your template and start going, no strings attached!
+          |             
+          a.btn.btn-primary.btn-xl.js-scroll-trigger(href='#about') Scopri di pi&ugrave;
+  // About
+  section#about.bg-primary
+    .container
+      .row
+        .col-lg-8.mx-auto.text-center
+          h2.section-heading.text-white
+            | Che cos&apos;&egrave; Sober?
+          |             
+          hr.light.my-4
+          |             
+          p.text-faded.mb-4
+            | Sober &egrave; la nuova frontiera dei social network, con cui puoi condividere idee, messaggi, fotografie e molto altro.
+          |             
+          a.btn.btn-light.btn-xl.js-scroll-trigger(href='#login') Registrati gratuitamente!
+  // Servizi
+  section#services
+    .container
+      .row
+        .col-lg-12.text-center
+          h2.section-heading Che cosa rende Sober unico
+          |             
+          hr.my-4
+    |       
+    .container
+      .row
+        .col-lg-3.col-md-6.text-center
+          .service-box.mt-5.mx-auto
+            i.fa.fa-4x.fa-user.text-primary.mb-3.sr-icons
+            |               
+            h3.mb-3 Connesso con il mondo
+            |               
+            p.text-muted.mb-0 Pubblica, condividi, esplora idee con tutto il mondo
+        |           
+        .col-lg-3.col-md-6.text-center
+          .service-box.mt-5.mx-auto
+            i.fa.fa-4x.fa-shield.text-primary.mb-3.sr-icons
+            |               
+            h3.mb-3 Sicuro e scalabile
+            |               
+            p.text-muted.mb-0
+              | Con le nuove tecnologie REST e l&apos;aproccio ad un database NoSQL rendono questo social network all&apos;avanguardia nel campo della sicurezza
+        |           
+        .col-lg-3.col-md-6.text-center
+          .service-box.mt-5.mx-auto
+            i.fa.fa-4x.fa-usd.text-primary.mb-3.sr-icons
+            |               
+            h3.mb-3 E&apos; gratis
+            |               
+            p.text-muted.mb-0 E lo sar&agrave; sempre
+        |           
+        .col-lg-3.col-md-6.text-center
+          .service-box.mt-5.mx-auto
+            i.fa.fa-4x.fa-apple.text-primary.mb-3.sr-icons
+            |               
+            h3.mb-3 C&apos;&egrave; anche la versione mobile!
+            |               
+            p.text-muted.mb-0
+              | Con la versione mobile del nostro social network non puoi perderti neanche un post!
+  // Login
+  section#login.bg-dark.text-white.w
+    .container.register
+      .row
+        .col-md-3.register-left
+          img(src='https://image.ibb.co/n7oTvU/logo_white.png', alt='')
+          |               
+          h3 Accedi o registrati
+          |               
+          p Accedi con le tue credenziali o crea un account gratuitamente
+        |           
+        .col-md-9.register-right
+          ul#myTab.nav.nav-tabs.nav-justified(role='tablist')
+            li.nav-item
+              a#home-tab.nav-link.active(data-toggle='tab', href='#home', role='tab', aria-controls='home', aria-selected='true') Accedi
+            |               
+            li.nav-item
+              a#profile-tab.nav-link(data-toggle='tab', href='#profile', role='tab', aria-controls='profile', aria-selected='false') Registrati
+          |             
+          #myTabContent.tab-content
+            #home.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='home-tab')
+              h3.register-heading Accedi
+              |                 
+              .row.register-form
+                if (message) != ""
+                  .col-md-12.mt.alternate
+                    .alert.alert-danger(role='alert')
+                      | #{message}
+                // Accedi
+                .col-md-12.mt.alternate
+                  form(action='/', method='POST')
+                    .col-md-12.mt.alternate
+                      .input-field
+                        input#usrlog.form-control(type='text', name="username", placeholder='Username', value='')
+                    |                   
+                    .col-md-12.mt.alternate
+                      .input-field
+                        input#pswlog.form-control(type='password', name="password", placeholder='Password', value='')
+                    |                   
+                    .col-lg-8
+                      input#btnLog.btnRegister(type='submit', value='Accedi')
+            |               
+            #profile.tab-pane.fade.show(role='tabpanel', aria-labelledby='profile-tab')
+              h3.register-heading Registrati
+              |                 
+              .row.register-form
+                if (success) == false
+                  for e in er
+                    .col-md-12.mt.alternate
+                      .alert.alert-danger(role='alert')
+                        | #{e.msg}
+                //Registrati
+                .col-md-12.mt.alternate
+                  form(action='/create', method='POST')
+                    .col-md-12.mt.alternate
+                      .input-field
+                        input#usrreg.form-control(type='text', name='username', placeholder='Username *', value='')
+                    |                   
+                    .col-md-6.mt.alternate
+                      .input-field
+                        input#nomereg.form-control(type='text', name='nome', placeholder='Nome *', value='')
+                    |                   
+                    .col-md-6.mt.alternate
+                      .input-field
+                        input#cognreg.form-control(type='text', name='cognome', placeholder='Cognome *', value='')
+                    |                   
+                    .col-md-6.mt.alternate
+                      .input-field
+                        input#pswcheck.form-control(type='password', name='pass', placeholder='Password *', value='')
+                    |                   
+                    .col-md-6.mt.alternate
+                      .input-field
+                        input#confreg.form-control(type='password', name='confpass', placeholder='Conferma password *', value='')
+                    |                   
+                    .col-md-6.mt.alternate
+                      .input-field
+                        input#emailreg.form-control(type='text', name='email', placeholder='Email *', value='')
+                    |                   
+                    .col-md-6.mt.alternate
+                      .input-field
+                        input#confereg.form-control(type='text', name='confemail', placeholder='Conferma email *', value='')
+                    |                   
+                    .col-lg-8
+                      input#btnReg.btnRegister(type='submit', value='Registrati')
+  |     
+  section#contact
+    .container
+      .row
+        .col-lg-8.mx-auto.text-center
+          h2.section-heading Se hai qualche consiglio non esitare!
+          |             
+          hr.my-4
+          |             
+          p.mb-5 Se hai delle idee per migliorare il sito basta inviarci una mail
+      |         
+      .row
+        .col-lg-4.ml-auto.text-center
+          i.fa.fa-phone.fa-3x.mb-3.sr-contact
+          |             
+          p 123-456-6789
+        |           
+        .col-lg-4.mr-auto.text-center
+          i.fa.fa-envelope-o.fa-3x.mb-3.sr-contact
+          |             
+          p
+            a(href='mailto:your-email@your-domain.com') simonini.daniel@hotmail.com
+
+  // Bootstrap core JavaScript
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+  |     
+  script(src='bootstrap/js/bootstrap.bundle.min.js')
+  // Plugin JavaScript
+  script(src='jquery-easing/jquery.easing.min.js')
+  |     
+  script(src='scrollreveal/scrollreveal.min.js')
+  |     
+  script(src='magnific-popup/jquery.magnific-popup.min.js')
+  // Custom scripts for this template
+  script(src='javascripts/creative.js')

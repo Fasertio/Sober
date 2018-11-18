@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  p Ti abbiamo inviato una mail per attivare l'account, inseriscial qui sotto
+  form(action='accepttoken', method='POST')
+    .col-md-12.mt.alternate
+      .input-field
+        input#token.form-control(type='text', name="token", placeholder='Codice')
+    |                   
+    .col-lg-8
+      input#btnLog.btnRegister(type='submit', value='Invia')

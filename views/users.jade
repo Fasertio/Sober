@@ -1,0 +1,112 @@
+extends layout
+
+block content
+    
+    //link(rel='stylesheet', href='stylesheets/stileHome.css')
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+      a.navbar-brand(href='#')
+      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      #navbarSupportedContent.collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          li.nav-item
+            a.nav-link(href='/users')
+              | Home 
+              span.sr-only (current)
+          li.nav-item
+            a.nav-link(href='/users/amici') Amici
+          li.nav-item
+            a.nav-link(href='/users/impostazioni') Impostazioni
+          li.nav-item
+            a.nav-link(href='/users/logout') Logout
+        // Button trigger modal
+        button.btn.btn-secondary.rounded.nm(type='button', data-toggle='modal', style='margin-right:10px', data-target='#exampleModal')
+          | Nuovo messaggio +
+        form.form-inline.my-2.my-lg-0(method='post', action='/users/ricerca')
+          input#ricerca.form-control.mr-sm-2(placeholder='Cerca utente..', aria-label='Scrivi', aria-describedby='button-addon2', type='text', name='cerca')
+          button#button-addon2.btn.btn-outline-secondary(type='submit') Cerca 
+    // Modal
+    if newmessage
+      #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+          .modal-content
+            .modal-header
+              h5#exampleModalLabel.modal-title Nuovo messaggio
+              button.close(type='button', data-dismiss="modal", aria-label='Close')
+                span(aria-hidden='true') ×
+            
+            .modal-body
+              input#messaggio.form-control.mr-sm-2(placeholder='Scrivi messaggio..', aria-label='Scrivi', aria-describedby='button-addon2', type='text')
+            .modal-footer
+              //button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+              input#filecount(type='file', accept=".png")
+              button#button-addon2.btn.btn-outline-secondary(type='submit', , data-dismiss='modal') Invia
+
+    .container-fluid
+      .row
+        .col-md-3
+          .card.my-3
+            .container-fluid
+              .row.bg-info.py-5
+                .col-3.mx-auto
+                  img.rounded-circle.img-fluid(src='#{utente.pp}', alt='person')
+                |                   
+                .col-12.text-center
+                  h3 #{utente.nome} #{utente.cognome}
+              |               
+              .row.mb-2
+                .col-12.py-3
+                  p #{utente.descrizione}
+              |               
+              .row.mb-2.justify-content-center
+                .col-sm.text-center
+                  i.fa.fa-star
+                  |                       
+                  br
+                  |  Seguaci
+                  |                       
+                  h4 0
+                |                                    
+                .col-sm.text-center
+                  i.fa.fa-file-o
+                  |                       
+                  br
+                  |  Posts
+                  |                       
+                  h4 #{messaggi.length}
+                |                   
+                .col-sm.text-center
+                  i.fa.fa-user
+                  |                       
+                  br
+                  |  Seguiti
+                  |                       
+                  h4 0
+        | &#x9;&#x9;
+        .col-md-9
+          if messaggi != null
+            for doc in messaggi
+              .card.mt-3
+                .card-header.text-white.bg-dark.h-50
+                  img.rounded.my-auto(src='#{utente.pp}', width='30px', height='30px', alt='...')
+                  |   #{doc.nautore} #{doc.cogautore}
+                  button.clsmsg.close(type='button', aria-label='Close', style='color: white')
+                    span(aria-hidden='true') &times;
+                .card-body
+                  p.card-text #{doc.testo}  
+                    span(style='float:right;')
+                      small Pubblicato: #{doc.data.getDay()}/#{doc.data.getMonth()}/#{doc.data.getUTCFullYear()}
+                    a#visibilityid(style='visibility:hidden;') #{doc._id}
+          else
+            .card.mt-3
+              .card-body
+                p.card-text( style="border-style: dashed") Sembra che tu non abbia nessun messaggio                    
+
+    script(src="../javascripts/msghandler.js") 
+    script(src="javascripts/bootstrap-filestyle.min.js")     
+    script.
+      $('#filecount').filestyle({
+      input : false,
+      buttonName : 'btn-primary',
+      iconName : 'glyphicon glyphicon-folder-close'
+      });
