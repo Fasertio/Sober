@@ -1,11 +1,11 @@
 # Sober
 
-##A simple and responsive social network idea
+## A simple and responsive social network idea
 
 Based on a NodeJs application, this social network can help you to understand the basic mechanics used by other web application.
 This web application include a login authentication, a page for the user creation and two pages where post messages.
 
-#Requirements
+# Requirements
 
 Basic requirements are:
 
@@ -13,7 +13,7 @@ Basic requirements are:
 - MongoDB
 - A text editor
 
-#Installing
+# Installing
 
 To install Sober, you need to clone or download the repository so you must download many modules:
 - 'npm install express'
