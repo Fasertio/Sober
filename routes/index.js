@@ -21,18 +21,19 @@ let transporter = nodemailer.createTransport({
   secure: false,
   port: 587,
   auth:{
-    user: 'sp3xxapzijflecsq@ethereal.email',
-    pass: '7FxSKDQ4SydPMpBC4P'
+    user: '',
+    pass: ''
   }
 });
 */
+//gmail settings
 let transporter = nodemailer.createTransport({
   service: 'gmail',
   secure: false,
   port: 25,
   auth:{
-    user: 'sobersocialofficial@gmail.com',
-    pass: 'Zxcvbnm21'
+    user: '',
+    pass: ''
   }
 });
 
@@ -44,7 +45,7 @@ var storage = multer.diskStorage({
   }
 });
 
-//controllo la validità dell'immagine
+//chek image - controllo la validità dell'immagine
 function checkext(file, cb){
   var estensioni = /jpg|jpeg|gif|svg|png/;
   var estnome = estensioni.test(path.extname(file.originalname).toLowerCase());
@@ -56,7 +57,7 @@ function checkext(file, cb){
   }
 }
 
-//Manage upload
+//Manage file upload
 var upload = multer({ storage: storage ,
                       limits: {fileSize: 1000000},
                       fileFilter: function(req,file,cb){
@@ -72,7 +73,7 @@ router.get('/', function(req, res, next) {
   res.render('log', { title: 'Sober', message: fl, success: req.session.success, er: req.session.errors });
 });
 
-//Autenticazione
+//Auth
 passport.use('local',new ls(
   function(username, password, done) {
     Auth.SearchByUsername(username, function(err, utente){
@@ -98,7 +99,7 @@ passport.use('local',new ls(
     });
   }
 ));
-//autenticazione passport
+//auth passport
 router.post('/',
   passport.authenticate('local', { successRedirect: '/users',
                                    failureRedirect: '/#login',
@@ -114,14 +115,14 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-//Richiesta post creazione account
+//POST account creation
 router.post('/create', function(req,res,next){
   req.check('email', 'Email non valida').isEmail();
   req.check('email', 'Le due email non corrispondono').equals(req.body.confemail);
   req.check('pass','La password deve essere lunga almeno 4 caratteri').isLength({min : 4}).equals(req.body.confpass);
 
   var checkusername;
-  //check utente non già utilizzato
+  //check username must be unique
   Auth.findOne({ username: req.body.username },function(err,doc){
     if(err) console.log(err);
     checkusername = doc;
@@ -137,7 +138,7 @@ router.post('/create', function(req,res,next){
     res.redirect('/#login');
     //sss
   }else{
-    //se non ci sono errori crea un nuovo utente
+    //if there aren't errors create a new user
     req.session.success = true;
 
     console.log('[+] Password: ' + req.body.pass);
@@ -167,7 +168,7 @@ router.post('/create', function(req,res,next){
         amici: ["base"]
       });
 
-      //Salvataggio su db con mongoose nella collection auths
+      //Saving on mongoDB database in the auths collection
       auth.save(function(err,auths){
         if(err){
           console.log("Errore salvataggio su db: " + err);
@@ -176,16 +177,17 @@ router.post('/create', function(req,res,next){
         }
       });
     });
-    //qua verrà mandata la mail
+    //create transport mail
     console.log("Email: " + req.body.email);
 
     var mail = {
                   from: 'sobersocialofficial@gmail.com',
-                  to: req.body.email , //qui ci vuole la mail dell'utente
+                  to: req.body.email , //user mail
                   subject: 'Conferma identità',
                   text: 'Salve, puoi confermare la tua identità premendo sul link, buona permanenza! ' + token
                   //html: '<p>Salve, puoi confermare la tua identità premendo sul link, buona permanenza! </br> <a href="/accepttoken/' + token +'">Token</a></p>'
                };
+    //confirm identity with link
     /*
     var mail = {
                   from: 'sobersocialofficial@gmail.com',
@@ -202,7 +204,7 @@ router.post('/create', function(req,res,next){
         console.log("[+] Mail inviata: " + response);
       }
     });
-    //Renderizza la page dell'utente della mail inviata
+    //Render mail page 
     res.render('sendmail');
   }
 });
@@ -220,7 +222,7 @@ router.post('/accepttoken', function(req,res,next){
       if(tk.autenticazione == true){
           console.log("[*] Utente già convalidato..");
       }else{
-        //Update dell'utente se non è autenticato
+        //If user confirmed update collection
         console.log("Utente trovato: " + tk);
         Auth.findByIdAndUpdate(tk._id, { autenticazione: true }, function(err, doc){
           if(err){
@@ -235,7 +237,7 @@ router.post('/accepttoken', function(req,res,next){
   });
 });
 
-//Pagina principale
+//Main page - pagina principale
 router.get('/users', loggato, function(req,res,next){
 
     var oggi = new Date();
@@ -249,28 +251,12 @@ router.get('/users', loggato, function(req,res,next){
       console.log("Lunghezza array" + doc.length);
       res.render('home',{ utente: req.user ,msg: doc, length: doc.length });
   });
-
-  /*
-  console.log("[+] Utente: " + req.user);
-  Msg.find({ autore: req.user.username },null, {sort: {data: -1}}, function(err,docs){
-    if(typeof docs != 'undefined'){
-      console.log("[+] Messaggi trovati" + docs[0]);
-      res.render('users', {nome: req.user.nome, utente: req.user,messaggi: docs, vuoto: false });
-    }else{
-      console.log("Nessun messaggio trovato");
-      res.render('users', {nome: req.user.nome, utente: req.user, vuoto: true });
-    }
-  });
-  */
-  //var utente = req.user.username;
-  //console.log("Redirecting....");
-  //res.redirect('/users/@' + utente);
 });
 
-//Creazione nuovo messaggio
+//New message - creazione nuovo messaggio
 router.post('/users/sendmsg',loggato, function(req,res,next){
 
-
+  //for upload image and message togheter
   /* manage enctype
   upload(req,res,function(er){
     if(er){
@@ -291,7 +277,7 @@ router.post('/users/sendmsg',loggato, function(req,res,next){
     cogautore: req.user.cognome,
     data: new Date()
   });
-  //Salvataggio su db con mongoose nella collection msg
+  //Saving n the msg collection on database - Salvataggio su db con mongoose nella collection msg
   msg.save(function(err,msg){
     if(err){
       console.log("Errore salvataggio su db: " + err);
@@ -323,7 +309,7 @@ router.get('/users/impostazioni',loggato, function(req,res,next){
   res.render('impostazioni', {title: "Impostazioni - Sober"});
 });
 
-//Impostazioni
+//Settings - Impostazioni
 
 //Avatar
 router.post('/users/uav',loggato ,function(req,res){
@@ -386,7 +372,7 @@ router.post('/users/upsw',loggato, function(req,res){
   });
 });
 
-//ricerca
+//Search - ricerca
 router.post('/users/ricerca', loggato, function(req,res,next){
   Auth.SearchByUsername(req.body.cerca, function(err, utente){
     if(err) throw err;
@@ -399,7 +385,7 @@ router.post('/users/ricerca', loggato, function(req,res,next){
   });
 });
 
-/* Cancella il messaggio passato */
+/* Delete message passed in parameters - cancella il messaggio passato */
 router.post('/users/cancellamsg', loggato, function(req,res,next){
   var idmsg = req.body.delmsg;
   //var name = req.query.n;
@@ -418,7 +404,7 @@ router.post('/users/cancellamsg', loggato, function(req,res,next){
   });
 });
 
-//Pagina dell'utentedasw
+//User page - Pagina dell'utente
 router.get('/users/@:username', function(req,res,next){
   //cerco tutti i messaggi di chi ha l'id
   console.log("Passed: " + req.params.username);
@@ -447,7 +433,7 @@ router.get('/users/@:username', function(req,res,next){
   });
 });
 
-//autenticazione only server
+//auth only server
 /*
 router.get('/accepttoken/:tkn',function(req,res){
   //se viene inserito il token
@@ -480,7 +466,8 @@ router.get('/accepttoken/:tkn',function(req,res){
 
 */
 
-//Aggiunge follower ..currently not working..
+//Add follower - Aggiunge follower
+//currently the increment of friends not work
 router.post('/users/addfollower', loggato ,function(req,res,next){
   //prende l'id di chi segue
   console.log("Id da aggiungere ai follower: " + req.body.idf);
@@ -495,10 +482,8 @@ router.post('/users/addfollower', loggato ,function(req,res,next){
   });
 });
 
-//Toglie un follower
+//Remove follower - Toglie un follower
 router.post('/users/toglifollower', loggato, function(req,res,next){
-  //coming soon
-  //prende l'id di chi segue
   console.log("Id da rimuovere ai follower: " + req.body.idf);
   console.log("Id utente:" + req.user._id);
 
@@ -517,7 +502,7 @@ router.get('/users/logout', loggato, function(req,res,next){
   res.redirect("/");
 });
 
-//La json di tutti i msg
+//Json  for debug
 router.get('/msg.json', function(req, res){
   Msg.find({}, function(err, messaggi){
     if(err) return console.log("Errore stamp messaggi");
@@ -535,7 +520,7 @@ router.get('/usr.json', function(req,res){
   });
 });
 
-//Funzione check login
+//Check if the user is logged - Funzione check login
 function loggato(req,res,next){
   if(req.isAuthenticated()){
     next();
